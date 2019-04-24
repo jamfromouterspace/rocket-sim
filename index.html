@@ -1,0 +1,264 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+
+  <!-- p5 and libraries -->
+  <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
+  <script language="javascript" type="text/javascript" src="libraries/matter.js"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.4.0.min.js"
+    integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+    crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+  <!-- CUSTOM -->
+  <script language="javascript" type="text/javascript" src="Ground.js"></script>
+  <script language="javascript" type="text/javascript" src="Rocket.js"></script>
+  <script language="javascript" type="text/javascript" src="Property.js"></script>
+  <script language="javascript" type="text/javascript" src="global.js"></script>
+  <script language="javascript" type="text/javascript" src="interface.js"></script>
+  <script language="javascript" type="text/javascript" src="simulation.js"></script>
+  <script language="javascript" type="text/javascript" src="rocket_sim.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+  <!-- CSS-->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,600" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style> body {padding: 0; margin: 0;} </style>
+</head>
+
+<body>
+  <div class="ui massive text loader"></div>
+    <div class="ui modal">
+      <div class="ui centered header">Created by Jamiel Rahi</div>
+      <div id="about-close">
+        <button class="about-close ui blue button">Close</button>
+      </div>
+      <div class="scrolling content" id="about">
+        <p>This web app was created for my final AERO 485 project at Concordia University
+          (Introduction to Space Systems). It does two things:</p>
+        <ol>
+          <li>Calculates remaining unknowns given any set of known rocket quantities.</li>
+          <li>Simulates the rocket using <code>matter.js</code></li>
+        </ol>
+        <p>It is important to note that the physics engine is not completely calibrated.
+        The documentation for <code>matter.js</code> is very unclear about what the units mean (for example,
+        what does it mean to apply a velocity of '1'?). A scaling factor had to be determined
+        experimentally so that the resulting simulation would be in the <strong>ballpark</strong> of
+        theoretical calculations.</p>
+        <p>The code is available (or will be available) on my github at <a href="https://github.com/closetothe">github.com/closetothe</a>.
+        The code is not the easiest to sort through, but it is organized. The Rocket class contains all the information about the rocket
+        required for simulation. Parameters are not passed to the Rocket object until they are all defined and the user clicks 'Start'.
+        The Rocket object somewhat ties together the rocket properties, <code>p5</code> canvas, and <code>matter.js</code> engine.</p>
+
+        <h2>Variable Completion</h2>
+
+        <p>The hardest part was not the simulation, but calculating unknowns. Because there are <em>many</em> different scenarios that are
+        possible, a sequence of conditional statements was completely unfeasible. The solution was to make a general-purpose Property class that holds
+        all the information required to solve for a variable. It holds a name (e.g. 'T' for thrust) and any number of sets of independent variables that can be used to
+        obtain it. Each set of variables is associated with an equation. When the object is constructed, an anonymous function must be passed for each
+        set of independent variables to represent this equation.</p>
+
+        <p>For example, the thrust (\(T\)) property is constructed in the following way</p>
+        <ol>
+          <li>\[T = f(C_e, \dot{m}) = C_e\dot{m}\] <br>
+              <strong>Independent variables:</strong> (\(C_e\),\(\dot{m}\)) <br>
+              <strong>Anonymous function</strong> <code>([ce,mdot]) => { return ce*mdot }</code>
+          </li>
+          <li>\[\Sigma F_x = ma\]
+            \[T - m(t)g = m(t)a\]
+            \[T - m_fg = m_fa_{max}\]
+            \[T = f(m_f, a_{max}) = m_f(a_{max}+g)\]
+            <br>
+              <strong>Independent variables:</strong> (\(m_f\),\(a_{max}\)) <br>
+              <strong>Anonymous function</strong> <code>([mf,amax]) => { return mf*(amax+g) }</code>
+          </li>
+        </ol>
+
+        <p>When the user inputs the value of a new variable, the <code>interface.js</code> script goes through each property,
+        solving as many as possible. It continues to loop through all properties until it no longer returns any new solutions. It must do this
+        because after a single pass-through it may have solved new variables, opening the doors for others to be solved that couldn't be solved before.
+        An alternative approach would be to search the independent variables associated with the new input, and only update <em>those</em>,
+       but this solution is not as elegant as it sounds. First, some independent variables appear across different equations, resulting in
+      immediate duplication. Second, the elegance is completely lost in the amount of extra code required to continue some such process until all
+    solutions are found.</p>
+
+      <p>After solving for as many unknowns as possible, the script updates the forms with the new solutions, while also disabling those inputs.
+        There are two reasons for disabling the inputs. First, it is easy to differentiate which values were manually inputted and which were solved by the
+      computer. Second, it prevents users from tampering with the values and ending up with inconsistent results.</p>
+
+      <p>Finally, there is some extra code that allows the user to delete the most recent input, undoing the solutions that were produced by it. Although this doesn't work
+      beyond the most recent input, it is generally possibly to change older values anyway, and the computer will adjust the numbers accordingly.</p>
+
+      <h2>Simulation</h2>
+      <p> With all the rocket parameters, simulation is straight-forward. Instead of applying a thrust force, the <code>simulation.js</code> script simply applies \(V(t)\)
+        to the body for each time step. Note that the body is approximated internally as a rectangle with the same height and width as the cartoon rocket drawn by the <code>p5.js</code> functions.
+        </p>
+
+        <p><strong>Primary Assumptions</strong></p>
+        <ul>
+          <li>No drag</li>
+          <li>Purely vertical flight</li>
+          <li>\(p_e = p_{\infty}\)</li>
+          <li>Steady-state mass flow rate</li>
+        </ul>
+
+        <h2>Equations and Units</h2>
+        \[C_e = gI_{sp} = V_e = F/\dot{m}\;\;[m/s]\]
+        <p>Where \(g=9.807\;m/s^2\)</p>
+        \[T - m_fg = m_fa_{max}\;\;[N]\]
+        <p>Note that \(a_{max}\) is in \([m/s^2]\)</p>
+        \[\dot{m} = m_p/\;\;[kg/s]\]
+        \[m_0 = m_{in} + m_{PL} + m_p = m_{inert} + m_{payload} + m_{propellant}\;\;[kg]\]
+        \[m_f = m_0 - m_p = m_{in} + m_{PL}\;\;[kg]\]
+        \[\text{Mass Ratio} = \text{MR} = m_f/m_i = 1/\text{R}\]
+        \[\epsilon = \frac{m_{in}}{m_{p} + m_{in}}\]
+        \[\zeta = 1 - \epsilon = \frac{m_{p}}{m_{in} + m_{p}}\]
+        \[\lambda = \frac{m_{PL}}{m_{PL} + m_{in}}\]
+        \[m(t) = m_0 - \dot{m}t = m_0 - m_p\frac{t}{t_b}\;\;[kg]\]
+        \[m(t_b) = m_f\]
+        \[V(t) = -C_e\ln{\frac{m(t)}{m_0}} - gt\;\;[m/s]\]
+        \[V_b = V(t_b)\]
+        \[h_b = -C_et_b\frac{\ln{R}}{R-1} + C_et_b -\frac{1}{2}gt_b^2\;\;[m]\]
+        \[h_{max} = h_b + \frac{V_b^2}{2g}\;\;[m]\]
+
+        <h2>Libraries Used</h2>
+        <ul>
+          <li>p5.js</li>
+          <li>matter.js</li>
+          <li>jQuery</li>
+          <li>Semantic UI</li>
+        </ul>
+
+        <h2>Small Details</h2>
+        <ul>
+          <li>The solution generator does not allow negative values. There is also some additional 'sanity-checking'. For example, if \(m_{p}\) is 0. </li>
+          <li>There is no real reason why I used both 'params' and 'properties' other than convenience. The names are confusing but they don't mean much.
+            'params' simply holds the latest set of values, while properties holds all the Property objects for the independent variables. I could have only used the latter, but it
+            felt a bit bulky.
+          </li>
+          <li>The equation-solver only runs when an input box leaves focus (by pressing enter or clicking away). I wanted it to be instant, but it gets stuck and doesn't let you type anymore. You might notice this problem on some inputs that you try to modify.</li>
+          <li>I have no idea what the complexity of this program is, since it goes through so many layers, but it is likely a factor of the number of independent variables.</li>
+          <li>The solution search prioritizes the simplest equation that could solve for the variable. This is a matter of constructing Properties with the order in mind.</li>
+          <li>This app uses JavaScript ES6 syntax pretty liberally. I purposely did not concern myself with browser compatibility (the project was hard enough as it is!) I've tested it on the latest Chrome, Firefox, and Safari.</li>
+          <li>The entire thing runs much smoother than I expected. Nevertheless, a lot of fat could be skimmed from the memory usage and page-load.</li>
+        </ul>
+      </div>
+    </div>
+  <div id="wrapper">
+    <div class="ui centered" id="title">
+      <h1>Ideal Rocket Launch Simulation</h1>
+      <button id="about-open" class="ui button">About</button>
+      <button id="sample" class="ui button">Sample</button>
+      <button id="start" class="ui button" disabled>Start</button>
+      <button id="stop" class="ui button" disabled>Stop</button>
+      <button id="reset" class="ui button">Reset</button>
+    </div>
+    <div class="ui centered stackable two column container grid">
+      <div class="column">
+        <div id="canvas-container">
+
+        </div>
+        <div id="simulation-details">
+          <h2>Simulation Time: <span id="sim-time">0</span> seconds</h2>
+          <h2>Simulation Height: <span id="sim-height">0</span> meters</h2>
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui centered two column grid" id="interface">
+          <div class="column">
+            <form class="ui small form">
+              <h3 id="mass-header">Mass</h3>
+              <div class="inline field">
+                <label>\(m_{inert}\)</label>
+                <input type="number" name="m_inert" placeholder="Inert Mass">
+              </div>
+              <div class="inline field">
+                <label>\(m_{load}\)</label>
+                <input type="number" name="m_payload" placeholder="Payload Mass">
+              </div>
+              <div class="inline field">
+                <label>\(m_{p}\)</label>
+                <input type="number" name="m_prop" placeholder="Propellant Mass">
+              </div>
+              <div class="inline field">
+                <label>\(m_{0}\)</label>
+                <input type="number" name="m_initial" placeholder="Initial Mass">
+              </div>
+              <div class="inline field">
+                <label>\(m_{f}\)</label>
+                <input type="number" name="m_final" placeholder="Final Mass">
+              </div>
+              <div class="inline field">
+                <label>\(MR\)</label>
+                <input type="number" name="MR" placeholder="Mass Ratio">
+              </div>
+              <div class="inline field">
+                <label>\(R\)</label>
+                <input type="number" name="R" placeholder="Inverse Mass Ratio">
+              </div>
+              <div class="inline field">
+                <label>\(\epsilon\)</label>
+                <input type="number" name="epsilon" placeholder="Structural Ratio">
+              </div>
+              <div class="inline field">
+                <label>\(\zeta\)</label>
+                <input type="number" name="zeta" placeholder="Propellant Ratio">
+              </div>
+              <div class="inline field">
+                <label>\(\lambda\)</label>
+                <input type="number" name="lambda" placeholder="Payload Ratio">
+              </div>
+            </form>
+          </div>
+          <div class="column">
+            <form class="ui small form">
+              <h3 id="kinematics-header">Kinematics</h3>
+              <div class="inline field">
+                <label>\(\Delta V\)</label>
+                <input type="number" name="v_burnout" placeholder="Burnout Velocity">
+              </div>
+              <div class="inline field">
+                <label>\(t_b\)</label>
+                <input type="number" name="t_burnout" placeholder="Burnout Time">
+              </div>
+              <div class="inline field">
+                <label>\(h_b\)</label>
+                <input type="number" name="h_burnout" placeholder="Burnout Height">
+              </div>
+              <div class="inline field">
+                <label>\(h_{max}\)</label>
+                <input type="number" name="h_max" placeholder="Final Height">
+              </div>
+            </form>
+            <form class="ui small form">
+              <h3 id="propulsion-header">Propulsion</h3>
+              <div class="inline field">
+                <label>\(I_{sp}\)</label>
+                <input type="number" name="Isp" placeholder="Specific Impulse">
+              </div>
+              <div class="inline field">
+                <label>\(C_{e}\)</label>
+                <input type="number" name="Ce" placeholder="Effective Velocity">
+              </div>
+              <div class="inline field">
+                <label>\(T\)</label>
+                <input type="number" name="T" placeholder="Thrust">
+              </div>
+              <div class="inline field">
+                <label>\(\dot{m}\)</label>
+                <input type="number" name="m_dot" placeholder="Mass Flow Rate">
+              </div>
+              <div class="inline field">
+                <label>\(a_{max}\)</label>
+                <input type="number" name="a_max" placeholder="Maximum Acceleration">
+              </div>
+            </form>
+          </div>
+
+      </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>

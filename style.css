@@ -1,0 +1,101 @@
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: url('black-hole.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-color: #e7e7e7;
+}
+
+label {
+  min-width: 40px;
+}
+
+h1,h2,{
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+}
+
+h1, {
+  font-size: 2.0em;
+}
+
+h2 {
+  font-size: 1.6em;
+}
+
+p,li {
+  font-size: 1.4em;
+  padding-top: 20px;
+  line-height: 30px;
+}
+
+li {
+  padding-bottom: 10px;
+}
+
+canvas {
+    border-radius: 10px;
+}
+
+.valid {
+  color: #71ad58;
+}
+
+.invalid {
+  color: #820a16;
+}
+
+.header {
+  font-size: 2.0em !important;
+  font-family: 'Open Sans', sans-serif !important;
+  font-weight: 600 !important;
+}
+
+#about-close {
+  text-align: center;
+  padding: 20px 0 20px 0;
+}
+
+#wrapper {
+  opacity: 0;
+}
+
+#title {
+  text-align: center;
+  padding-bottom: 50px;
+  padding-top: 20px;
+}
+
+#about {
+  color: black;
+  text-align: justify;
+  padding: 30px 20% 80px 20%;
+}
+
+#canvas-container {
+  text-align: center;
+}
+
+#interface {
+  margin: 0 auto;
+}
+
+#simulation-details {
+  text-align: center;
+  padding-top: 30px;
+  opacity: 0;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.fade-in {
+  animation: fade-in 1s forwards;
+}
