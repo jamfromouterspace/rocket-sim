@@ -17,7 +17,7 @@ function updateField(name, disable) {
     $(selector)[0].value = params[name].toPrecision(6);
   }
   else $(selector)[0].value = null;
-  $(selector).attr('disabled', disable);
+  $(selector).attr('disabled', false);
 }
 
 function paramInput(p) {
@@ -216,6 +216,10 @@ function attachEventListeners() {
     for(i in params) {
       setProperty(i);
       userInput[i] = [0,0];
+    }
+    for(i in params) {
+      // Enable editing
+      $('input[name="' + i + '"]').attr('disabled', false);
     }
     validate();
   }
