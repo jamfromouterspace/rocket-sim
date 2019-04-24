@@ -10,6 +10,7 @@ var h0; // Initial height
 var m0; // Initial mass
 var m; // Current mass
 var v; // Current velocity
+var h; // Current height
 var v_prev; // Keep track of acceleration
 var t_prev;
 var a;
