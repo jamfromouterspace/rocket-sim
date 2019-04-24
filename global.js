@@ -6,8 +6,17 @@ const Engine = Matter.Engine,
 var engine, world, rocket, ground;
 var running = false; // Simulation is running
 var t0; // Time at the start of simulation
-var y0; // Initial height
+var h0; // Initial height
 var m0; // Initial mass
+var m; // Current mass
+var v; // Current velocity
+var v_prev; // Keep track of acceleration
+var t_prev;
+var a;
+var reached_burnout;
+var v_burnout;
+var h_burnout;
+var h_max;
 var k = 1;
 var t;
 

@@ -14,7 +14,7 @@ class Rocket {
    this.body.mass = 25;
    this.initialX = this.body.position.x-this.bodyWidth/2;
    this.initialY = this.body.position.y-this.bodyHeight/2;
-   this.scale = 1/42.448; // Experimentally determined.
+   this.scale = 1/56.18; // Experimentally determined.
    // this.scale = 1;
   }
 

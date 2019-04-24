@@ -10,6 +10,8 @@ function draw() {
 	if(running) {
 		t = (millis()-t0)/1000;
 		h = getHeight();
+		a = getAcceleration();
+		if(h > h_max) h_max = h;
 		setVelocity();
 		updateDisplay();
 	}
