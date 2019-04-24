@@ -15,7 +15,9 @@ function draw() {
 		setVelocity();
 		updateDisplay();
 	}
-  background(75);
+	if (h <= 0 && reached_burnout)
+		running = false;
+  	background(75);
 	ground.draw();
 	rocket.draw();
 }
