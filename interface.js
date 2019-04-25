@@ -131,12 +131,12 @@ function validate() {
   else $("#kinematics-header").removeClass("invalid valid");
 
   if(ready) {
-    $("#start").attr("disabled", false);
-    $("#start").addClass("blue");
+    $(".start").attr("disabled", false);
+    $(".start").addClass("blue");
   }
   else {
-    $("#start").attr("disabled", true);
-    $("#start").removeClass("blue");
+    $(".start").attr("disabled", true);
+    $(".start").removeClass("blue");
   }
 }
 
@@ -164,7 +164,7 @@ function attachEventListeners() {
     // First click resets the simulation, second resets the params
     if(rocket.params) {
       resetSim();
-      $("#start").attr("disabled", false);
+      $(".start").attr("disabled", false);
       $("html, body").animate({
         scrollTop: $('#simulation-details').offset().top - $(window).height()/2
       }, 500);
@@ -175,9 +175,9 @@ function attachEventListeners() {
         updateField(i, false);
       }
       $("#sample").attr("disabled", false);
-      $("#start").attr("disabled", true);
-      $("#start").removeClass("blue");
-      $("#stop").attr("disabled", true);
+      $(".start").attr("disabled", true);
+      $(".start").removeClass("blue");
+      $(".stop").attr("disabled", true);
       $("#mass-header").removeClass("invalid valid");
       $("#kinematics-header").removeClass("invalid valid");
       $("#propulsion-header").removeClass("invalid valid");
@@ -188,7 +188,7 @@ function attachEventListeners() {
   }
 
   var stop = function() {
-    $("#start").attr("disabled", true);
+    $(".start").attr("disabled", true);
     stopSim();
   }
 
@@ -233,8 +233,8 @@ function attachEventListeners() {
 
   var startSimulation = function() {
     run();
-    $("#stop").attr("disabled", false);
-    $("#start").attr("disabled", true);
+    $(".stop").attr("disabled", false);
+    $(".start").attr("disabled", true);
     $("#sample").attr("disabled", true);
     $("html, body").animate({
       scrollTop: $('#simulation-details').offset().top - $(window).height()/2
@@ -243,9 +243,9 @@ function attachEventListeners() {
   }
 
   $('input').on('change', inputCallback);
-  $('#reset').on('click', reset);
-  $('#start').on('click', startSimulation);
-  $('#stop').on('click', stop);
+  $('.reset').on('click', reset);
+  $('.start').on('click', startSimulation);
+  $('.stop').on('click', stop);
   $('#sample').on('click', setSample);
   $('#about-open').on('click', aboutCallback);
   $('#about-close > button').on('click', function() {

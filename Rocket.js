@@ -11,6 +11,8 @@ class Rocket {
                                  this.bodyHeight);
    this.rocketColor = "#cccccc"
    this.nozzleColor = "#626a84"
+   this.exhaustColor = "#fae100";
+   this.exhaustFillColor = "#fa552a";
    this.body.mass = 25;
    this.initialX = this.body.position.x-this.bodyWidth/2;
    this.initialY = this.body.position.y-this.bodyHeight/2;
@@ -43,6 +45,7 @@ class Rocket {
     x = this.initialX + this.scale*(x-this.initialX);
     y = this.initialY + this.scale*(y-this.initialY);
     // Head
+    stroke("black")
   	fill(this.rocketColor);
   	beginShape();
   	vertex(x+5,y);
@@ -60,10 +63,31 @@ class Rocket {
   	// Nozzle
   	fill(this.nozzleColor)
   	beginShape();
-  	vertex(x,y+60);
-  	vertex(x+10,y+60);
-  	vertex(x+14,y+70);
-  	vertex(x-4,y+70);
+  	vertex(x+2,y+60);
+  	vertex(x+8,y+60);
+  	vertex(x+10,y+70);
+  	vertex(x,y+70);
   	endShape(CLOSE);
+
   }
+
+  drawExhaust() {
+    let x = this.body.position.x-this.bodyWidth/2;
+    let y = this.body.position.y-this.bodyHeight/2;
+    x = this.initialX + this.scale*(x-this.initialX);
+    y = this.initialY + this.scale*(y-this.initialY);
+    fill(this.exhaustColor)
+    stroke(this.exhaustFillColor)
+    beginShape();
+    curveVertex(x,y+70);
+    curveVertex(x,y+70);
+    curveVertex(x,y+73);
+    curveVertex(x+4,y+85);
+    curveVertex(x+6,y+85);
+    curveVertex(x+10,y+75);
+    curveVertex(x+10,y+70);
+    curveVertex(x+1,y+70);
+    endShape(CLOSE);
+  }
+
 }

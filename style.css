@@ -70,6 +70,10 @@ button {
   padding-left: 40px;
 }
 
+.buttons {
+  text-align: center;
+}
+
 #about-close {
   text-align: center;
   margin: auto;

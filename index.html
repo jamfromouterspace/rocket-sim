@@ -150,14 +150,19 @@
       <h1>The <em>Ideal</em> Rocket Simulator</h1>
       <button id="about-open" class="ui small button">About</button>
       <button id="sample" class="ui small button">Sample</button>
-      <button id="start" class="ui small button" disabled>Start</button>
-      <button id="stop" class="ui small button" disabled>Stop</button>
-      <button id="reset" class="ui small button">Reset</button>
+      <button class="ui small button start" disabled>Start</button>
+      <button class="ui small button stop" disabled>Stop</button>
+      <button class="ui small button reset">Reset</button>
     </div>
-    <div class="ui centeed stackable two column container grid">
+    <div class="ui centered stackable two column container grid">
       <div class="column">
         <div id="canvas-container">
 
+        </div>
+        <div class="buttons">
+          <button class="ui small button start" disabled>Start</button>
+          <button class="ui small button stop" disabled>Stop</button>
+          <button class="ui small button reset">Reset</button>
         </div>
         <div id="simulation-details">
           <h2>Simulation Time: <span id="sim-time">0</span> seconds</h2>

@@ -20,4 +20,6 @@ function draw() {
   	background(75);
 	ground.draw();
 	rocket.draw();
+	if(running && !reached_burnout)
+		rocket.drawExhaust();
 }

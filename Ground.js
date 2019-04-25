@@ -17,6 +17,7 @@ class Ground {
 
     let x = this.body.position.x-this.bodyWidth/2;
     let y = this.body.position.y-this.bodyHeight/2;
+    stroke("black");
     fill(this.groundColor);
     rect(x, y, this.bodyWidth, this.bodyHeight);
   }
