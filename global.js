@@ -137,10 +137,10 @@ var properties = {
                             ([lam, min]) => { return lam*min/(1-lam) },
                           ]),
   'epsilon' : new Property('epsilon', [ ['zeta'],
-                                        ['m_inert', 'm_payload'] ],
+                                        ['m_inert', 'm_prop'] ],
                           [
                             ([z]) => { return 1-z },
-                            ([min, mpl]) => { return min/(min+mpl) },
+                            ([min, mp]) => { return min/(min+mp) },
                           ]),
   'zeta' : new Property('zeta', [ ['epsilon'] ],
                           [
