@@ -46,6 +46,11 @@ canvas {
     border-radius: 10px;
 }
 
+button {
+  text-align: center !important;
+  margin: 10px 5px 10px 5px !important;
+}
+
 .valid {
   color: #71ad58;
 }
@@ -60,9 +65,9 @@ canvas {
   font-weight: 600 !important;
 }
 
-button {
-  text-align: center !important;
-  margin: 10px 5px 10px 5px !important;
+
+.solving {
+  padding-left: 40px;
 }
 
 #about-close {

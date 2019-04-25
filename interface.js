@@ -1,10 +1,10 @@
 function preparePage() {
-  $(".loader").css("opacity", 0);
-  $(".loader").addClass("active", 0);
-  $(".loader").addClass("fade-in");
+  $("#page-loader").css("opacity", 0);
+  $("#page-loader").addClass("active", 0);
+  $("#page-loader").addClass("fade-in");
   setTimeout(function() {
     $("#wrapper").addClass("fade-in");
-    $(".loader").removeClass("active");
+    $("#page-loader").removeClass("active");
   }, 800);
 }
 
@@ -38,6 +38,7 @@ let prev = [];
 function setProperty(p) {
   // inputs.append(p);
   if (userDeleted(p)) {
+    showSolving();
     params[p] = null;
     for(i of prev) {
       params[i] = null;
@@ -48,6 +49,8 @@ function setProperty(p) {
     prev = [];
     let new_solutions = 1;
     let i = 0;
+    // Show loader
+    showSolving();
     while(new_solutions > 0) {
       i++
       let s = solve();
@@ -254,3 +257,13 @@ function attachEventListeners() {
       }
   });
 }
+
+
+function showSolving() {
+  // Show loader for longer than it actually takes to solve
+  // because solving is instantaneous
+  $(".solving").addClass("active");
+  setTimeout(()=>{$(".solving").removeClass("active");}, 200);
+}
+
+

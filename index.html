@@ -28,7 +28,7 @@
 </head>
 
 <body>
-  <div class="ui massive text loader"></div>
+  <div id="page-loader" class="ui massive text loader"></div>
     <div class="ui modal">
       <div class="ui centered header">Created by Jamiel Rahi</div>
       <div id="about-close">
@@ -85,7 +85,7 @@
 
       <p>After solving for as many unknowns as possible, the script updates the forms with the new solutions, while also disabling those inputs.
         There are two reasons for disabling the inputs. First, it is easy to differentiate which values were manually inputted and which were solved by the
-      computer. Second, it prevents users from tampering with the values and ending up with inconsistent results.</p>
+      computer. Second, it prevents users from tampering with the values and ending up with inconsistent results. <strong>Update:</strong> The feature is currently disabled to allow users to alter the sample rocket data.</p>
 
       <p>Finally, there is some extra code that allows the user to delete the most recent input, undoing the solutions that were produced by it. Although this doesn't work
       beyond the most recent input, it is generally possibly to change older values anyway, and the computer will adjust the numbers accordingly.</p>
@@ -154,7 +154,7 @@
       <button id="stop" class="ui small button" disabled>Stop</button>
       <button id="reset" class="ui small button">Reset</button>
     </div>
-    <div class="ui centered stackable two column container grid">
+    <div class="ui centeed stackable two column container grid">
       <div class="column">
         <div id="canvas-container">
 
@@ -172,7 +172,7 @@
         <div class="ui centered two column grid" id="interface">
           <div class="column">
             <form class="ui tiny form">
-              <h3 id="mass-header">Mass</h3>
+              <h3 id="mass-header">Mass<div class="ui tiny inline loader solving"></div></h3>
               <div class="inline field">
                 <label>\(m_{inert}\) [\(kg\)]</label>
                 <input type="number" name="m_inert" placeholder="Inert Mass">
@@ -217,7 +217,7 @@
           </div>
           <div class="column">
             <form class="ui tiny form">
-              <h3 id="kinematics-header">Kinematics</h3>
+              <h3 id="kinematics-header">Kinematics <div class="ui tiny inline loader solving"></div></h3>
               <div class="inline field">
                 <label>\(\Delta V\) [\(m/s\)]</label>
                 <input type="number" name="v_burnout" placeholder="Burnout Velocity">
@@ -236,7 +236,7 @@
               </div>
             </form>
             <form class="ui tiny form">
-              <h3 id="propulsion-header">Propulsion</h3>
+              <h3 id="propulsion-header">Propulsion <div class="ui tiny inline loader solving"></div></h3>
               <div class="inline field">
                 <label>\(I_{sp}\) [\(s\)]</label>
                 <input type="number" name="Isp" placeholder="Specific Impulse">
