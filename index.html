@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The IDEAL Rocket Simulator!</title>
+  <title>The Ideal Rocket Simulator!</title>
   <!-- p5 and libraries -->
   <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
   <script language="javascript" type="text/javascript" src="libraries/matter.js"></script>
@@ -147,7 +147,7 @@
     </div>
   <div id="wrapper">
     <div class="ui centered" id="title">
-      <h1>The IDEAL Rocket Simulator</h1>
+      <h1>The <em>Ideal</em> Rocket Simulator</h1>
       <button id="about-open" class="ui small button">About</button>
       <button id="sample" class="ui small button">Sample</button>
       <button id="start" class="ui small button" disabled>Start</button>
@@ -174,23 +174,23 @@
             <form class="ui tiny form">
               <h3 id="mass-header">Mass</h3>
               <div class="inline field">
-                <label>\(m_{inert}\)</label>
+                <label>\(m_{inert}\) [\(kg\)]</label>
                 <input type="number" name="m_inert" placeholder="Inert Mass">
               </div>
               <div class="inline field">
-                <label>\(m_{load}\)</label>
+                <label>\(m_{load}\) [\(kg\)]</label>
                 <input type="number" name="m_payload" placeholder="Payload Mass">
               </div>
               <div class="inline field">
-                <label>\(m_{p}\)</label>
+                <label>\(m_{p}\) [\(kg\)]</label>
                 <input type="number" name="m_prop" placeholder="Propellant Mass">
               </div>
               <div class="inline field">
-                <label>\(m_{0}\)</label>
+                <label>\(m_{0}\) [\(kg\)]</label>
                 <input type="number" name="m_initial" placeholder="Initial Mass">
               </div>
               <div class="inline field">
-                <label>\(m_{f}\)</label>
+                <label>\(m_{f}\) [\(kg\)]</label>
                 <input type="number" name="m_final" placeholder="Final Mass">
               </div>
               <div class="inline field">
@@ -219,42 +219,42 @@
             <form class="ui tiny form">
               <h3 id="kinematics-header">Kinematics</h3>
               <div class="inline field">
-                <label>\(\Delta V\)</label>
+                <label>\(\Delta V\) [\(m/s\)]</label>
                 <input type="number" name="v_burnout" placeholder="Burnout Velocity">
               </div>
               <div class="inline field">
-                <label>\(t_b\)</label>
+                <label>\(t_b\) [\(s\)]</label>
                 <input type="number" name="t_burnout" placeholder="Burnout Time">
               </div>
               <div class="inline field">
-                <label>\(h_b\)</label>
+                <label>\(h_b\) [\(m\)]</label>
                 <input type="number" name="h_burnout" placeholder="Burnout Height">
               </div>
               <div class="inline field">
-                <label>\(h_{max}\)</label>
+                <label>\(h_{max}\) [\(m\)]</label>
                 <input type="number" name="h_max" placeholder="Final Height">
               </div>
             </form>
             <form class="ui tiny form">
               <h3 id="propulsion-header">Propulsion</h3>
               <div class="inline field">
-                <label>\(I_{sp}\)</label>
+                <label>\(I_{sp}\) [\(s\)]</label>
                 <input type="number" name="Isp" placeholder="Specific Impulse">
               </div>
               <div class="inline field">
-                <label>\(C_{e}\)</label>
+                <label>\(C_{e}\) [\(m/s\)]</label>
                 <input type="number" name="Ce" placeholder="Effective Velocity">
               </div>
               <div class="inline field">
-                <label>\(T\)</label>
+                <label>\(T\) [\(N\)]</label>
                 <input type="number" name="T" placeholder="Thrust">
               </div>
               <div class="inline field">
-                <label>\(\dot{m}\)</label>
+                <label>\(\dot{m}\) [\(kg/s\)]</label>
                 <input type="number" name="m_dot" placeholder="Mass Flow Rate">
               </div>
               <div class="inline field">
-                <label>\(a_{max}\)</label>
+                <label>\(a_{max}\) [\(m/s^2\)]</label>
                 <input type="number" name="a_max" placeholder="Maximum Acceleration">
               </div>
             </form>
