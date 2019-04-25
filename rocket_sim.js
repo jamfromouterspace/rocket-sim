@@ -3,7 +3,8 @@ function setup() {
 	canvas.parent('canvas-container');
 	preparePage();
 	attachEventListeners();
-  prepareEngine();
+ 	prepareEngine();
+ 	t1 = millis();
 }
 
 function draw() {
@@ -21,5 +22,7 @@ function draw() {
 	ground.draw();
 	rocket.draw();
 	if(running && !reached_burnout)
-		rocket.drawExhaust();
+		rocket.drawExhaust();	
+
+	if(h_max > 10 && getHeight() < 10) rocket.explode();
 }

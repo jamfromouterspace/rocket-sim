@@ -67,8 +67,6 @@ function resetSim() {
   prepareEngine();
 }
 
-
-
 function prepareEngine() {
   reached_burnout = false;
   v_prev = 0;

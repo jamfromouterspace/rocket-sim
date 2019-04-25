@@ -13,6 +13,9 @@ class Rocket {
    this.nozzleColor = "#626a84"
    this.exhaustColor = "#fae100";
    this.exhaustFillColor = "#fa552a";
+   this.d = 10; // Explosion ellipse initial size
+   this.h1 = 0; // Used to determine whether rocket is falling
+   this.h2 = 0;
    this.body.mass = 25;
    this.initialX = this.body.position.x-this.bodyWidth/2;
    this.initialY = this.body.position.y-this.bodyHeight/2;
@@ -29,7 +32,8 @@ class Rocket {
   }
 
   x() {
-    return (this.scale)*this.body.position.x;
+    // return (this.scale)*this.body.position.x;
+    return width/2;
   }
 
   y() {
@@ -90,4 +94,13 @@ class Rocket {
     endShape(CLOSE);
   }
 
+  explode() {
+    let x = this.x();
+    let y = (height-this.y())-20;
+    fill(this.exhaustColor);
+    stroke(this.exhaustFillColor);
+    ellipse(x, y, this.d, this.d/2);
+    if (this.d < 3000)
+      this.d += 25;
+  }
 }
