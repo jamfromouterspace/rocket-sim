@@ -96,7 +96,8 @@
 
       <h2>Simulation</h2>
       <p> With all the rocket parameters, simulation is straight-forward. Instead of applying a thrust force, the <code>simulation.js</code> script simply applies \(V(t)\)
-        to the body for each time step (including gravity).
+        to the body for each time step (including gravity). When the rocket mass reduces to the final mass, the exhaust fire visual is disabled and the mass stays constant.
+        The simulation is certainly not perfect, but it helps to visualize the equations of motion (and the burn time). <strong>But don't let the rocket hit the ground!</strong>
         \[V(t) = -C_e\ln{\frac{m(t)}{m_0}} - gt\;\;[m/s]\]
         \[m(t) = m_0 - \dot{m}t\;\;[kg]\]
         Note that the body is approximated internally as a rectangle with the same height and width as the cartoon rocket drawn by the <code>p5.js</code> functions.
@@ -106,7 +107,7 @@
         <ul>
           <li>No drag</li>
           <li>Purely vertical flight</li>
-          <li>\(p_e = p_{\infty}\)</li>
+          <li>Ideal nozzle (\(p_e = p_{\infty}\))</li>
           <li>Steady-state mass flow rate</li>
         </ul>
 

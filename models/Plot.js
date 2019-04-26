@@ -1,6 +1,7 @@
-// Created based on the following tutorials:
+// Created with the help of:
 // https://blog.webkid.io/responsive-chart-usability-d3/
 // https://medium.freecodecamp.org/learn-to-create-a-line-chart-using-d3-js-4f43f1ee716b
+// https://bl.ocks.org/shimizu/914c769f05f1b2e1d09428c7eedd7f8a
 
 class Plot {
 
