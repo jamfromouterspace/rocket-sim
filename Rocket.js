@@ -9,10 +9,12 @@ class Rocket {
                                  y - this.bodyHeight/2,
                                  this.bodyWidth,
                                  this.bodyHeight);
-   this.rocketColor = "#cccccc"
-   this.nozzleColor = "#626a84"
-   this.exhaustColor = "#fae100";
-   this.exhaustFillColor = "#fa552a";
+   this.rocketColor = color("#cccccc");
+   this.nozzleColor = color("#626a84");
+   this.exhaustColor = color("#fae100");
+   this.exhaustFillColor = color("#fa552a");
+   this.explosionColor = color('hsl(54,100%,90%)');
+   this.explosionColorHSL = [54,100,90];
    this.d = 10; // Explosion ellipse initial size
    this.h1 = 0; // Used to determine whether rocket is falling
    this.h2 = 0;
@@ -97,10 +99,30 @@ class Rocket {
   explode() {
     let x = this.x();
     let y = (height-this.y())-20;
-    fill(this.exhaustColor);
+    if (this.d < 3000) {
+      this.d += 25;
+      if(this.explosionColorHSL[2] > 40) {
+        // Darken initiallly
+        let light = this.explosionColorHSL[2] - 1;
+        this.explosionColor = color('hsl(54,100%,'+light+'%)');
+        this.explosionColorHSL[2] = light;
+      }
+      else if (this.explosionColorHSL[2] <= 40 && this.explosionColorHSL[0] > 20) {
+        // Become more red
+        let hue = this.explosionColorHSL[0] - 1;
+        this.explosionColor = color('hsl('+hue+',100%,40%)');
+        this.explosionColorHSL[0] = hue;
+      }
+    }
+    if (this.d > 2500 && this.explosionColorHSL[1] > 3){
+      // Become grey (soot)
+      let hue = this.explosionColorHSL[0];
+      let sat = this.explosionColorHSL[1] - 0.3;
+      this.explosionColor = color('hsl('+hue+','+sat+'%,40%)');
+      this.explosionColorHSL[1] = sat;
+    }
+    fill(this.explosionColor);
     stroke(this.exhaustFillColor);
     ellipse(x, y, this.d, this.d/2);
-    if (this.d < 3000)
-      this.d += 25;
   }
 }
