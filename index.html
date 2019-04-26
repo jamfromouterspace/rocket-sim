@@ -12,7 +12,7 @@
     integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
     crossorigin="anonymous"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
-  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script language="javascript" type="text/javascript" src="libraries/d3_v5.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 
   <!-- CUSTOM -->
@@ -40,10 +40,11 @@
       </div>
       <div class="scrolling content" id="about">
         <p>This web app was created for my final AERO 485 project at Concordia University
-          (Introduction to Space Systems). It does two things:</p>
+          (Introduction to Space Systems). It does three things:</p>
         <ol>
           <li>Calculates remaining unknowns given any set of known rocket quantities.</li>
           <li>Simulates the rocket using <code>matter.js</code></li>
+          <li>Plots the velocity over time using <code>d3.js</code></li>
         </ol>
         <p>It is important to note that the physics engine is not completely calibrated.
         The documentation for <code>matter.js</code> is very unclear about what the units mean (for example,
@@ -130,6 +131,14 @@
         \[h_b = -C_et_b\frac{\ln{R}}{R-1} + C_et_b -\frac{1}{2}gt_b^2\;\;[m]\]
         \[h_{max} = h_b + \frac{V_b^2}{2g}\;\;[m]\]
 
+        <h2>Validation</h2>
+        The computations were checked against hand calculations as well as the rocket solver I created for
+        another project for this course. The other project is written in MATLAB, and finds all the possible solutions
+        for a given design problem. I picked some of those solutions at random, started entering the values, and received the
+        same data from the solver on this site. Note that the code is considerably different between the two, so it was reassuring.
+        The aforementioned project can also be found on my github page.
+
+
         <h2>Libraries Used</h2>
         <ul>
           <li>p5.js</li>
@@ -175,15 +184,18 @@
         </div>
         <div id="simulation-display" class="ui centered stackable two column grid hidden">
           <div class="column" id="simulation-details">
-            <h2>Simulation Time: <span id="sim-time" class="sim-info">0</span><span class="sim-info"> s</span></h2>
+            <h2>Current Time: <span id="sim-time" class="sim-info">0</span><span class="sim-info"> s</span></h2>
             <h2>Current Height: <span id="sim-height" class="sim-info">0</span><span class="sim-info"> m</span></h2>
+            <h2>Current Velocity: <span id="sim-velocity" class="sim-info">0</span><span class="sim-info"> m</span></h2>
   <!--           <h2>Acceleration: <span id="sim-accel"></span> m/s^2</h2> -->
-            <h2>Burnout Velocity: <span id="sim-vb" class="sim-info">N/A</span><span class="sim-info"> m/s</span></h2>
+            <h2>Burnout Time: <span id="sim-tb" class="sim-info">N/A</span><span class="sim-info"> s</span></h2>
             <h2>Burnout Height: <span id="sim-hb" class="sim-info">N/A</span><span class="sim-info"> m</span></h2>
+            <h2>Burnout Velocity: <span id="sim-vb" class="sim-info">N/A</span><span class="sim-info"> m/s</span></h2>
             <h2>Max Height: <span id="sim-hmax" class="sim-info">0</span><span class="sim-info"> m</span></h2>
+            <button id="toggle-plots" class="ui tiny blue circular button">Height</button>
           </div>
-          <div id="plot" class="column">
-          </div>
+            <div id="plot" class="column">
+            </div>
         </div>
       </div>
       <div class="column">

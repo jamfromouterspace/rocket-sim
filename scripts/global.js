@@ -19,6 +19,7 @@ var a;
 var reached_burnout;
 var v_burnout;
 var h_burnout;
+var t_burnout;
 var h_max;
 var k = 1;
 var t;
@@ -26,7 +27,10 @@ var t;
 const g = 9.807;
 
 // Holds the velocity-time data
-var data = [{velocity: 0, time: 0}];
+var data = {vt: [{velocity: 0, time: 0}],
+						ht: [{height: 0, time: 0}]}
+var range = {}; // Holds the maxima and minima
+var currentPlot = "vt";
 var plot;
 
 var params = {

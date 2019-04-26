@@ -5,9 +5,11 @@
 
 class Plot {
 
-  constructor() {
+  constructor(x,y, xLabel, yLabel) {
     this.id = "#plot";
-    this.margin = { top: 10, right: 30, bottom: 20, left: 30 };
+    this.x = x; // E.g. "time"
+    this.y = y; // E.g. "velocity"
+    this.margin = { top: 10, right: 30, bottom: 20, left: 40 };
     this.updateDimensions();
     this.svg = d3.select('#plot').append('svg')
       .attr("width", this.svgWidth)
@@ -35,7 +37,7 @@ class Plot {
       .attr("dx", "1.1em")
       .attr("y", -12)
       .attr("dy", "0.71em")
-      .text("Time (s)");
+      .text(xLabel);
 
 
     this.yAxis = this.g.append("g")
@@ -49,18 +51,18 @@ class Plot {
       .attr("y", 6)
       .attr("dy", "0.71em")
       .attr("text-anchor", "end")
-      .text("Velocity (m/s)");
+      .text(yLabel);
 
     this.path = this.g.append("path")
   }
 
-  update() {
-    this.updateScale();
+  update(data,range) {
+    this.updateScale(range);
     let x = this.xScale;
     let y = this.yScale;
     this.line = d3.line()
-       .x( d =>{ return this.xScale(d.time)})
-       .y( d =>{ return this.yScale(d.velocity)})
+       .x( d =>{ return this.xScale(d[this.x])})
+       .y( d =>{ return this.yScale(d[this.y])})
 
     this.svg.select('.x')
             .attr("transform", "translate(0," + this.height + ")")
@@ -89,14 +91,17 @@ class Plot {
 
   }
 
-  updateScale() {
+  updateScale(range) {
+    if(!range) {
+      range = {x: {min: 0, max: 0}, y: {min: 0, max: 0}};
+    }
     this.xScale = d3.scaleLinear().rangeRound([0, this.width]);
     this.yScale = d3.scaleLinear().rangeRound([this.height, 0]);
     this.xAxisCall = d3.axisBottom();
     this.yAxisCall = d3.axisLeft();
-    this.yScale.domain([v_min, v_max])
+    this.yScale.domain([range.y.min, range.y.max])
                .range([this.height-(this.margin.top+this.margin.bottom),0])
-    this.xScale.domain([0,t])
+    this.xScale.domain([range.x.min,range.x.max])
                .range([0,this.width-(this.margin.top+this.margin.bottom)])
     this.xAxisCall.scale(this.xScale)
     this.yAxisCall.scale(this.yScale)

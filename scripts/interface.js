@@ -245,6 +245,7 @@ function attachEventListeners() {
     $("#simulation-display").addClass('fade-in');
   }
 
+  $("#toggle-plots").on("click", togglePlots);
   $('input').on('change', inputCallback);
   $('.reset').on('click', reset);
   $('.start').on('click', startSimulation);

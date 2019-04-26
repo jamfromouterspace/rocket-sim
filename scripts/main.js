@@ -16,7 +16,7 @@ function draw() {
 		if(h > h_max) h_max = h;
 		setVelocity();
 		updateDisplay();
-		plot.update();
+		updatePlots();
 	}
 	if (h <= 0 && reached_burnout)
 		running = false;

@@ -131,8 +131,11 @@ button {
 #simulation-details {
   text-align: center;
   padding-top: 30px;
-  font-size: 0.9em;
-  margin: auto;
+  font-size: 0.8em;
+}
+
+#simulation-details > h2 {
+  margin: 15px auto;
 }
 
 /* Includes plot */
@@ -147,6 +150,10 @@ button {
 #plot > svg{
   background-color: rgba(0,0,0,.2);
   border-radius: 10px;
+}
+
+#toggle-plots {
+  margin: 0 auto;
 }
 
 @keyframes fade-in {
