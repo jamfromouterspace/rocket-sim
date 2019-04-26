@@ -174,6 +174,7 @@ function attachEventListeners() {
         params[i] = null;
         updateField(i, false);
       }
+      if(plot) plot.clear();
       $("#sample").attr("disabled", false);
       $(".start").attr("disabled", true);
       $(".start").removeClass("blue");
@@ -182,8 +183,9 @@ function attachEventListeners() {
       $("#kinematics-header").removeClass("invalid valid");
       $("#propulsion-header").removeClass("invalid valid");
       $("#sim-time").html('0');
-      $("#simulation-details").css('opacity',0);
-      $("#simulation-details").removeClass('fade-in');
+      $("#simulation-display").css('opacity', 0);
+      $("#simulation-display").addClass('hidden');
+      $("#simulation-display").removeClass('fade-in');
     }
   }
 
@@ -236,10 +238,11 @@ function attachEventListeners() {
     $(".stop").attr("disabled", false);
     $(".start").attr("disabled", true);
     $("#sample").attr("disabled", true);
+    $("#simulation-display").removeClass('hidden');
     $("html, body").animate({
       scrollTop: $('#simulation-details').offset().top - $(window).height()/2
     }, 500);
-    $("#simulation-details").addClass('fade-in');
+    $("#simulation-display").addClass('fade-in');
   }
 
   $('input').on('change', inputCallback);
@@ -250,11 +253,14 @@ function attachEventListeners() {
   $('#about-open').on('click', aboutCallback);
   $('#about-close > button').on('click', function() {
     $('.ui.modal').modal('hide');
-  })
+  });
   $(document).keyup(function(e) {
-       if (e.key === "Escape") {
+       if(e.key === "Escape") {
          $('.ui.modal').modal('hide');
       }
+  });
+  $(window).on("resize",function(e) {
+      if(plot) plot.updateDimensions();
   });
 }
 
@@ -265,5 +271,3 @@ function showSolving() {
   $(".solving").addClass("active");
   setTimeout(()=>{$(".solving").removeClass("active");}, 200);
 }
-
-

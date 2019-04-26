@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="icon.png" type="image/png">
+  <link rel="icon" href="styles/icon.png" type="image/png">
   <title>The Ideal Rocket Simulator!</title>
   <!-- p5 and libraries -->
   <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
@@ -12,19 +12,22 @@
     integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
     crossorigin="anonymous"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
-  <!-- CUSTOM -->
-  <script language="javascript" type="text/javascript" src="Ground.js"></script>
-  <script language="javascript" type="text/javascript" src="Rocket.js"></script>
-  <script language="javascript" type="text/javascript" src="Property.js"></script>
-  <script language="javascript" type="text/javascript" src="global.js"></script>
-  <script language="javascript" type="text/javascript" src="interface.js"></script>
-  <script language="javascript" type="text/javascript" src="simulation.js"></script>
-  <script language="javascript" type="text/javascript" src="rocket_sim.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+  <!-- CUSTOM -->
+  <script language="javascript" type="text/javascript" src="models/Ground.js"></script>
+  <script language="javascript" type="text/javascript" src="models/Rocket.js"></script>
+  <script language="javascript" type="text/javascript" src="models/Property.js"></script>
+  <script language="javascript" type="text/javascript" src="models/Plot.js"></script>
+  <script language="javascript" type="text/javascript" src="scripts/global.js"></script>
+  <script language="javascript" type="text/javascript" src="scripts/interface.js"></script>
+  <script language="javascript" type="text/javascript" src="scripts/simulation.js"></script>
+  <script language="javascript" type="text/javascript" src="scripts/main.js"></script>
   <!-- CSS-->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,600" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles/style.css">
   <style> body {padding: 0; margin: 0;} </style>
 </head>
 
@@ -93,7 +96,10 @@
 
       <h2>Simulation</h2>
       <p> With all the rocket parameters, simulation is straight-forward. Instead of applying a thrust force, the <code>simulation.js</code> script simply applies \(V(t)\)
-        to the body for each time step. Note that the body is approximated internally as a rectangle with the same height and width as the cartoon rocket drawn by the <code>p5.js</code> functions.
+        to the body for each time step (including gravity).
+        \[V(t) = -C_e\ln{\frac{m(t)}{m_0}} - gt\;\;[m/s]\]
+        \[m(t) = m_0 - \dot{m}t\;\;[kg]\]
+        Note that the body is approximated internally as a rectangle with the same height and width as the cartoon rocket drawn by the <code>p5.js</code> functions.
         </p>
 
         <p><strong>Primary Assumptions</strong></p>
@@ -127,6 +133,7 @@
         <ul>
           <li>p5.js</li>
           <li>matter.js</li>
+          <li>d3.js</li>
           <li>jQuery</li>
           <li>Semantic UI</li>
         </ul>
@@ -165,13 +172,17 @@
           <button class="ui small button stop" disabled>Stop</button>
           <button class="ui small button reset">Reset</button>
         </div>
-        <div id="simulation-details">
-          <h2>Simulation Time: <span id="sim-time">0</span> seconds</h2>
-          <h2>Current Height: <span id="sim-height">0</span> m</h2>
-<!--           <h2>Acceleration: <span id="sim-accel"></span> m/s^2</h2> -->
-          <h2>Burnout Velocity: <span id="sim-vb">N/A</span> m/s</h2>
-          <h2>Burnout Height: <span id="sim-hb">N/A</span> m</h2>
-          <h2>Max Height: <span id="sim-hmax">0</span> meters</h2>
+        <div id="simulation-display" class="ui centered stackable two column grid hidden">
+          <div class="column" id="simulation-details">
+            <h2>Simulation Time: <span id="sim-time" class="sim-info">0</span><span class="sim-info"> s</span></h2>
+            <h2>Current Height: <span id="sim-height" class="sim-info">0</span><span class="sim-info"> m</span></h2>
+  <!--           <h2>Acceleration: <span id="sim-accel"></span> m/s^2</h2> -->
+            <h2>Burnout Velocity: <span id="sim-vb" class="sim-info">N/A</span><span class="sim-info"> m/s</span></h2>
+            <h2>Burnout Height: <span id="sim-hb" class="sim-info">N/A</span><span class="sim-info"> m</span></h2>
+            <h2>Max Height: <span id="sim-hmax" class="sim-info">0</span><span class="sim-info"> m</span></h2>
+          </div>
+          <div id="plot" class="column">
+          </div>
         </div>
       </div>
       <div class="column">

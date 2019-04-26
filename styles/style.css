@@ -50,6 +50,22 @@ button {
   text-align: center !important;
   margin: 10px 5px 10px 5px !important;
 }
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
 
 .valid {
   color: #71ad58;
@@ -70,8 +86,17 @@ button {
   padding-left: 40px;
 }
 
+
+.sim-info {
+  font-weight: 300;
+}
+
 .buttons {
   text-align: center;
+}
+
+.hidden {
+  display: none !important;
 }
 
 #about-close {
@@ -106,7 +131,22 @@ button {
 #simulation-details {
   text-align: center;
   padding-top: 30px;
-  opacity: 0;
+  font-size: 0.9em;
+  margin: auto;
+}
+
+/* Includes plot */
+#simulation-display {
+    opacity: 0;
+}
+
+#plot {
+  text-align: center;
+}
+
+#plot > svg{
+  background-color: rgba(0,0,0,.2);
+  border-radius: 10px;
 }
 
 @keyframes fade-in {

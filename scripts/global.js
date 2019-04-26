@@ -10,6 +10,8 @@ var h0; // Initial height
 var m0; // Initial mass
 var m; // Current mass
 var v; // Current velocity
+var v_max;
+var v_min;
 var h; // Current height
 var v_prev; // Keep track of acceleration
 var t_prev;
@@ -22,6 +24,10 @@ var k = 1;
 var t;
 
 const g = 9.807;
+
+// Holds the velocity-time data
+var data = [{velocity: 0, time: 0}];
+var plot;
 
 var params = {
   'Isp'       : null,

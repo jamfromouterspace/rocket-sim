@@ -1,19 +1,22 @@
-
 function setVelocity() {
     m = getMass();
     v_prev = v;
     t_prev = t;
     v = -rocket.params['Ce']*Math.log(m/m0) - g*t;
     // Prevent rocket from going through ground
-    if(h > 20 || !reached_burnout) 
+    if(h > 20 || !reached_burnout)
       Body.setVelocity(rocket.body, {x:0,y:-(v/(10*k))});
     if(reached_burnout && !v_burnout) v_burnout = v;
+    // Save velocity and time;
+    data.push({velocity: v, time: t});
+    if(v > v_max) v_max = v;
+    else if(v < v_min) v_min = v;
 }
 
 function getMass() {
   if(m <= rocket.params['m_final']) {
-    if(!reached_burnout) { 
-      reached_burnout = true; 
+    if(!reached_burnout) {
+      reached_burnout = true;
       h_burnout = h;
     }
     return rocket.params['m_final'];
@@ -42,6 +45,8 @@ function updateDisplay() {
 }
 
 function run() {
+  if(plot) plot.clear();
+  plot = new Plot();
   rocket.setParams(params);
   if (rocket.params['h_burnout'] > 1000) k = 1.5;
   else if (rocket.params['h_burnout'] > 10000) k = 2;
@@ -64,6 +69,11 @@ function resetSim() {
   rocket.params = undefined;
   World.clear(engine.world);
   Engine.clear(engine);
+  v_max = 0;
+  v_min = 0;
+  t = 0;
+  data = [{velocity:0,time:0}]; // Reset data
+  plot.update(); // Resets plot with empty data
   prepareEngine();
 }
 
@@ -72,6 +82,9 @@ function prepareEngine() {
   v_prev = 0;
   a = 0;
   h_max = 0;
+  v_min = 0;
+  v_max = 0;
+  t = 0;
   v_burnout = undefined;
   h_burnout = undefined;
   v = 0;
